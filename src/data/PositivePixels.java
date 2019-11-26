@@ -109,11 +109,11 @@ public class PositivePixels {
 
     }
 
-    public ArrayList<Integer> getGoodPixels(int index) {
+    public ArrayList<Integer> getPositivePixels(int index) {
         return goodValues.get(index);
     }
 
-    public ArrayList<Integer> getGoodPixels(String letter) {
+    public ArrayList<Integer> getPositivePixels(String letter) {
         char charLetter = letter.charAt(0);
         int index = ((int) charLetter) - 65;
 

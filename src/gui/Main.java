@@ -19,9 +19,9 @@ public class Main extends JFrame {
     private DrawingPannel drawingPannel;
     private CustomPanel resultPanel;
 
-    private JButton clearButton;
+    private JButton deleteButton;
     private JButton trainButton;
-    private JButton transformButton;
+    private JButton preditionButton;
 
     private JButton helpButton;
     private JButton trainNetworkButton;
@@ -42,7 +42,6 @@ public class Main extends JFrame {
         setLeftSide();
         setCenter();
         setRightSide();
-        setOutputPannel();
 
         setOnClicks();
 
@@ -52,7 +51,7 @@ public class Main extends JFrame {
         setSize(1260,500);
 
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
     }
 
     private void setMainPannel(){
@@ -72,13 +71,11 @@ public class Main extends JFrame {
 
         panel.setPreferredSize(new Dimension(410,440));
 
-        drawLetterButton = new JButton("Draw: ");
-        drawLetterCombo = new JComboBox<>(new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z", "Y"});
 
         drawingPannel = new DrawingPannel(400,400,RESOLUTION);
 
-        panel.add(drawLetterButton);
-        panel.add(drawLetterCombo);
+        helpButton = new JButton("Help");
+        panel.add(helpButton);
         panel.add(drawingPannel);
 
         mainPannel.add(panel);
@@ -96,7 +93,11 @@ public class Main extends JFrame {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
         gbc.anchor = GridBagConstraints.CENTER;
+        centerPannel.add(new JLabel("Draw: ", SwingConstants.CENTER),gbc );
+        drawLetterCombo = new JComboBox<>(new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z", "Y"});
 
+        centerPannel.add(drawLetterCombo,gbc);
+        centerPannel.add(Box.createVerticalStrut(50));
 
         trainNetworkButton = new JButton("Train X Times: ");
         trainingSetsAmount = new JFormattedTextField("5000");
@@ -105,22 +106,21 @@ public class Main extends JFrame {
 
         trainingSetsAmount.setPreferredSize(new Dimension(100,30));
 
-        centerPannel.add(trainNetworkButton,gbc);
-        centerPannel.add(trainingSetsAmount,gbc);
-
-        helpButton = new JButton("Help");
-        centerPannel.add(helpButton,gbc);
-        centerPannel.add(Box.createVerticalStrut(50));
-
-        transformButton = new JButton(">>");
-        centerPannel.add(transformButton,gbc);
+        //centerPannel.add(trainNetworkButton,gbc);
+        //centerPannel.add(trainingSetsAmount,gbc);
 
         centerPannel.add(Box.createVerticalStrut(50));
 
-        clearButton = new JButton("clear");
 
-        clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        centerPannel.add(clearButton,gbc);
+        preditionButton = new JButton("Prediction >> ");
+        centerPannel.add(preditionButton,gbc);
+
+        centerPannel.add(Box.createVerticalStrut(50));
+
+        deleteButton = new JButton("delete");
+
+        deleteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPannel.add(deleteButton,gbc);
 
         centerPannel.add(Box.createVerticalStrut(50));
 
@@ -149,9 +149,9 @@ public class Main extends JFrame {
 
     private void setOutputPannel(){
         JPanel outputPannel = new JPanel();
-        outputPannel.setPreferredSize( new Dimension(200, 400));
+        outputPannel.setPreferredSize( new Dimension(200, 440));
         outputTextArea = new JTextArea();
-        outputTextArea.setPreferredSize( new Dimension(200,430));
+        outputTextArea.setPreferredSize( new Dimension(200,440));
 
         outputPannel.add(outputTextArea);
         mainPannel.add(outputPannel);
@@ -159,8 +159,10 @@ public class Main extends JFrame {
 
     private void setOnClicks() {
 
-        clearButton.addActionListener(e -> {
+        deleteButton.addActionListener(e -> {
             drawingPannel.clear();
+            resultPanel.clear();
+
         });
 
         trainButton.addActionListener(e -> {
@@ -171,7 +173,7 @@ public class Main extends JFrame {
             ReadWriteFile.saveToFile(drawingPannel.getPixels(), letter);
         });
 
-        transformButton.addActionListener(e -> {
+        preditionButton.addActionListener(e -> {
             trainer.setInputs(drawingPannel.getPixels());
 
             ArrayList<Double> out = trainer.getOutputs();
@@ -186,7 +188,7 @@ public class Main extends JFrame {
             updateTextArea();
 
             trainAsCombo.setSelectedIndex(index);
-            resultPanel.drawLetter(PositivePixels.getInstance().getGoodPixels(index));
+            resultPanel.drawLetter(PositivePixels.getInstance().getPositivePixels(index));
         });
 
 
@@ -211,16 +213,10 @@ public class Main extends JFrame {
             trainer.train(number);
         });
 
-        drawLetterButton.addActionListener(e -> {
-            String letter = (String) drawLetterCombo.getSelectedItem();
-            ArrayList<Integer> positivePixels = PositivePixels.getInstance().getGoodPixels(letter);
-
-            drawingPannel.drawLetter(positivePixels);
-        });
 
         drawLetterCombo.addActionListener(e -> {
             String letter = (String) drawLetterCombo.getSelectedItem();
-            ArrayList<Integer> positivePixels = PositivePixels.getInstance().getGoodPixels(letter);
+            ArrayList<Integer> positivePixels = PositivePixels.getInstance().getPositivePixels(letter);
             drawingPannel.drawLetter(positivePixels);
         });
     }
@@ -240,7 +236,7 @@ public class Main extends JFrame {
                 int x = (int) (value);
                 value = x / 1000.0;
 
-                sb.append("\t " + value);
+                sb.append("\t " + Math.round(value*100.0f) + "%");
                 sb.append("\n");
             }
             outputTextArea.setText(sb.toString());

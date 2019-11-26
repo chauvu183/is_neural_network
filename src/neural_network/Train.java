@@ -4,6 +4,8 @@ import data.ReadWriteFile;
 import java.util.ArrayList;
 /*
  Train is a Backpropagation implementation, which help to improve the result of the output.
+ Training :
+ 1.
  */
 public class Train {
     private static final int NEURON_COUNT = 26;
@@ -16,7 +18,7 @@ public class Train {
         this.network.addNeurons(NEURON_COUNT);
         this.trainingSets = ReadWriteFile.readTrainingSets();
     }
-
+    
     public void train (long count ){
         for(long i = 0; i < count; i++){
             int index = ((int) (Math.random() * trainingSets.size()));

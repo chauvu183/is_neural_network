@@ -41,7 +41,7 @@ public class CustomPanel extends JPanel {
     }
 
     private void generateSections(Graphics g){
-        g.setColor(Color.CYAN);
+        g.setColor(Color.WHITE);
 
         for(Section s : sections){
             g.drawLine(0,s.getY(), width, s.getY());
