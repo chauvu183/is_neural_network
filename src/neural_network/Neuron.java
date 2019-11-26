@@ -7,8 +7,7 @@ import java.util.ArrayList;
     2.Initialize all weights, including all biases if any, to small random values (normally in the range of -1 to +1).
     3. Forward propagation of the first input pattern of the training set from the input layer over the hidden layer(s) to the output layer, where each neuron sums the weighted inputs, passes them through the non-linearity and passes this weighted sum to the neurons in the next layer.
         Output = (Sum(each input* its weight) + (bias * Bias Weight)) * Sigmoid
-    4. In order to adjust the weight to change the result of the output, we have adjust function:
-        4.1.
+    4. In order to adjust the weight to change the result of the output, we have adjust function
  */
 
 public class Neuron {
