@@ -2,7 +2,9 @@ package neural_network;
 import data.ReadWriteFile;
 
 import java.util.ArrayList;
-
+/*
+ Train is a Backpropagation implementation, which help to improve the result of the output.
+ */
 public class Train {
     private static final int NEURON_COUNT = 26;
 
@@ -22,7 +24,7 @@ public class Train {
             TrainingSet set = trainingSets.get(index);
 
             network.setInput(set.getInputs());
-            network.adjustWeights(set.getPositiveResults());
+            network.adjustWages(set.getPositiveResults());
         }
     }
 

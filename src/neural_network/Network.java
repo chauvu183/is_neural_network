@@ -28,13 +28,13 @@ public class Network {
         }
         return outputs;
     }
-
-    public void adjustWeights(ArrayList<Double> targetOutput){
+    //Loss Function, to determine how good our valuation function for the network
+    public void adjustWages(ArrayList<Double> targetOutput){
         for(int i = 0; i < neurons.size(); i++){
+
             double delta = targetOutput.get(i) - neurons.get(i).getOutput();
             neurons.get(i).adjustWeights(delta);
         }
     }
-
 
 }
